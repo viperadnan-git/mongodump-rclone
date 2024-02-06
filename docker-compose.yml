@@ -1,0 +1,22 @@
+services:
+  mongodump:
+    image: mongodump-rclone
+    environment:
+      - MONGO_DB=mydb
+      - MONGO_COLLECTION=mycollection
+      - RCLONE_REMOTE=myremote
+      - RCLONE_REMOTE_PATH=/path/to/remote
+      - MONGO_URI=mongodb://myuser:xxxxxxxxxx@xxxxxx:27017/mydb
+    volumes:
+      - /home/user/.config/rclone:/config/rclone:ro
+  mongoexport:
+    image: mongodump-rclone
+    environment:
+      - USE_MONGOEXPORT=true
+      - MONGO_DB=mydb
+      - MONGO_COLLECTION=mycollection
+      - RCLONE_REMOTE=myremote
+      - RCLONE_REMOTE_PATH=/path/to/remote
+      - MONGO_URI=mongodb://myuser:xxxxxxxxxx@xxxxxx:27017/mydb
+    volumes:
+      - /home/user/.config/rclone:/config/rclone:ro
