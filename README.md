@@ -19,7 +19,7 @@ docker run \
   -e RCLONE_REMOTE=myremote \
   -e RCLONE_REMOTE_PATH=/path/to/remote \ 
   -e MONGO_URI=mongodb://myuser:xxxxxxxxxx@xxxxxx:27017/mydb \ 
-  -v $HOME/.config/rclone:/config/rclone:ro \ 
+  -v $HOME/.config/rclone:/config/rclone \ 
   --rm \ 
   -it \
   mongodump-rclone
@@ -40,7 +40,7 @@ services:
       - RCLONE_REMOTE_PATH=/path/to/remote
       - MONGO_URI=mongodb://myuser:xxxxxxxxxx@xxxxxx:27017/mydb
     volumes:
-      - /home/user/.config/rclone:/config/rclone:ro
+      - /home/user/.config/rclone:/config/rclone
   mongoexport:
     image: mongodump-rclone
     environment:
@@ -51,7 +51,7 @@ services:
       - RCLONE_REMOTE_PATH=/path/to/remote
       - MONGO_URI=mongodb://myuser:xxxxxxxxxx@xxxxxx:27017/mydb
     volumes:
-      - /home/user/.config/rclone:/config/rclone:ro
+      - /home/user/.config/rclone:/config/rclone
 ```
 
 Run the following command to start the services.

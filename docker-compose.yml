@@ -8,7 +8,7 @@ services:
       - RCLONE_REMOTE_PATH=/path/to/remote
       - MONGO_URI=mongodb://myuser:xxxxxxxxxx@xxxxxx:27017/mydb
     volumes:
-      - /home/user/.config/rclone:/config/rclone:ro
+      - /home/user/.config/rclone:/config/rclone
   mongoexport:
     image: mongodump-rclone
     environment:
@@ -19,4 +19,4 @@ services:
       - RCLONE_REMOTE_PATH=/path/to/remote
       - MONGO_URI=mongodb://myuser:xxxxxxxxxx@xxxxxx:27017/mydb
     volumes:
-      - /home/user/.config/rclone:/config/rclone:ro
+      - /home/user/.config/rclone:/config/rclone

@@ -16,9 +16,9 @@ RCLONE_REMOTE=${RCLONE_REMOTE:-"default"}
 
 if [ ! -f "$RCLONE_CONFIG_FILE" ]; then
     echof "rclone.conf file does not exist, creating it ($RCLONE_CONFIG_FILE)"
-    mkdir -p ~/.config/rclone
-    echof "[$RCLONE_REMOTE]" >$RCLONE_CONFIG_FILE
-    echof -e "$RCLONE_CONFIG" >>$RCLONE_CONFIG_FILE
+    mkdir -p "$(dirname $RCLONE_CONFIG_FILE)"
+    echo "[$RCLONE_REMOTE]" >$RCLONE_CONFIG_FILE
+    echo "$RCLONE_CONFIG" >>$RCLONE_CONFIG_FILE
 fi
 
 RCLONE_ARGS=${RCLONE_ARGS:-""}
