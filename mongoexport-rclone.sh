@@ -1,21 +1,24 @@
 #!/bin/bash
 
+echof() {
+    builtin echo -e "$(date +"%Y-%m-%dT%H:%M:%S.000%z")\t$*"
+}
+
 RCLONE_CONFIG=$RCLONE_CONFIG
 RCLONE_CONFIG_FILE="/config/rclone/rclone.conf"
 
-# if RCLONE_CONFIG file does not exist and RCLONE_CONFIG environment variable is not set
 if [ ! -f "$RCLONE_CONFIG_FILE" ] && [ -z "$RCLONE_CONFIG" ]; then
-    echo "Error: rclone.conf file does not exist and RCLONE_CONFIG environment variable is not set"
+    echof "Error: rclone.conf file does not exist and RCLONE_CONFIG environment variable is not set"
     exit 1
 fi
 
 RCLONE_REMOTE=${RCLONE_REMOTE:-"default"}
 
 if [ ! -f "$RCLONE_CONFIG_FILE" ]; then
-    echo "rclone.conf file does not exist, creating it ($RCLONE_CONFIG_FILE)"
+    echof "rclone.conf file does not exist, creating it ($RCLONE_CONFIG_FILE)"
     mkdir -p ~/.config/rclone
-    echo "[$RCLONE_REMOTE]" > $RCLONE_CONFIG_FILE
-    echo -e "$RCLONE_CONFIG" >> $RCLONE_CONFIG_FILE
+    echof "[$RCLONE_REMOTE]" >$RCLONE_CONFIG_FILE
+    echof -e "$RCLONE_CONFIG" >>$RCLONE_CONFIG_FILE
 fi
 
 RCLONE_ARGS=${RCLONE_ARGS:-""}
@@ -32,10 +35,10 @@ if [ -n "$MONGO_DB" ]; then
 fi
 
 if [ -n "$MONGO_COLLECTION" ]; then
-  MONGOEXPORT_ARGS="$MONGOEXPORT_ARGS -c $MONGO_COLLECTION"
+    MONGOEXPORT_ARGS="$MONGOEXPORT_ARGS -c $MONGO_COLLECTION"
 else
-  echo "Error: MONGO_COLLECTION environment variable is not set"
-  exit 1
+    echof "Error: MONGO_COLLECTION environment variable is not set"
+    exit 1
 fi
 
 FILENAME_TIMESTAMP=${FILENAME_TIMESTAMP:-"true"}
@@ -52,18 +55,18 @@ elif [ "$MONGOEXPORT_TYPE" = "csv" ]; then
     OUTPUT_FILE="$FILENAME.csv"
     MONGOEXPORT_ARGS="$MONGOEXPORT_ARGS --type=csv"
 else
-    echo "Error: MONGOEXPORT_TYPE environment variable is not set to json or csv"
+    echof "Error: MONGOEXPORT_TYPE environment variable is not set to json or csv"
     exit 1
 fi
 
-echo "Exporting database to $OUTPUT_FILE"
-echo "mongoexport options: $MONGOEXPORT_ARGS"
-echo "rclone options: $RCLONE_ARGS"
+echof "exporting database to $OUTPUT_FILE"
+echof "mongoexport options: $MONGOEXPORT_ARGS"
+echof "rclone options: $RCLONE_ARGS"
 
 if [ -n "$MONGO_URI" ]; then
-    echo "Using MONGO_URI environment variable"
+    echof "Using MONGO_URI environment variable for connection with MongoDB"
     MONGOEXPORT_ARGS="$MONGOEXPORT_ARGS --uri=$MONGO_URI"
 fi
 
-mongoexport $MONGOEXPORT_ARGS | \
-rclone rcat $RCLONE_ARGS $RCLONE_REMOTE:"$RCLONE_REMOTE_PATH"/"$OUTPUT_FILE"
+mongoexport $MONGOEXPORT_ARGS |
+    rclone rcat $RCLONE_ARGS $RCLONE_REMOTE:"$RCLONE_REMOTE_PATH"/"$OUTPUT_FILE"

@@ -1,9 +1,15 @@
 #!/bin/bash
 
+export TZ=${TZ:-"UTC"}
+
+echof() {
+    builtin echo -e "$(date +"%Y-%m-%dT%H:%M:%S.000%z")\t$*"
+}
+
 if [ "$USE_MONGOEXPORT" == "true" ]; then
-    echo "Using mongoexport"
+    echof "using mongoexport"
     bash mongoexport-rclone.sh
 else
-    echo "Using mongodump"
+    echof "using mongodump"
     bash mongodump-rclone.sh
 fi
