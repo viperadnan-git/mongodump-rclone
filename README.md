@@ -1,5 +1,11 @@
 # mongodump-rclone
 
+> **⚠️ ARCHIVED - This project is now read-only**
+>
+> This project has been superseded by [**dbstash**](https://github.com/viperadnan-git/dbstash), a complete rewrite in Go that supports multiple databases (PostgreSQL, MongoDB, MySQL, MariaDB, Redis) with better performance, scheduling, and features.
+>
+> **Please use [dbstash](https://github.com/viperadnan-git/dbstash) for new projects.**
+
 This is a simple script to backup a MongoDB database using `mongodump` and upload it to a remote storage using `rclone`. It is intended to be used as a cron job.
 
 ## Usage
